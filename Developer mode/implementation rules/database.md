@@ -1,0 +1,27 @@
+# Database Implementation Rule
+MODE: database_implementation
+
+TRIGGER:
+- task touches migration|schema|model|relationship|query|persistence
+
+PREFLIGHT:
+- inspect := existing_migrations|models|relationships|factories|seeders|queries|frontend_field_usage
+- destructive_schema_change requires explicit_user_approval
+- duplicate_column|duplicate_table := denied
+
+SCHEMA_CONTRACT:
+- migration defines only current_task_required fields
+- model_fields align with migration_columns
+- relationships declare cardinality + foreign_keys + delete_behavior
+- indexes required for planned lookup/filter/sort paths
+- nullable/defaults align with validation + UI optional fields
+
+DATA_ALIGNMENT:
+- db_field_to_frontend_name_map required before form/API edits
+- API_json fields must_match model/migration names OR explicit adapter_mapping
+- persistence_verified := create|read|update|delete as required by current task
+
+FUNCTIONAL_DONE:
+- schema supports current end_to_end user_flow
+- persistence_or_query verified through route/service/UI path
+- migration_only.as_checked := denied
