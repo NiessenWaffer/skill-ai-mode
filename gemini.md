@@ -3,12 +3,12 @@
 MODE: root_router
 
 MODES:
-- planning := Planning mode/planning-skill.md
-- developer := Developer mode/developer-skill.md
+- planning := .agents/skills/planning-mode/SKILL.md
+- developer := .agents/skills/developer-mode/SKILL.md
 
 AGENT_SKILLS:
-- planning_skill := /planning -> Planning mode/planning-skill.md
-- developer_skill := /developer -> Developer mode/developer-skill.md
+- planning_skill := /planning -> .agents/skills/planning-mode/SKILL.md
+- developer_skill := /developer -> .agents/skills/developer-mode/SKILL.md
 - one_mode_at_a_time := true
 - mode_switch_requires := explicit_user_request OR escalation_event
 

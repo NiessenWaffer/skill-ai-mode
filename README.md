@@ -1,20 +1,28 @@
 # skill-ai-mode
 
-Minimal AI skill repo.
+Minimal AI skill repo for supported AI editors.
 
 ## Active skills
 
-- `/planning` -> `Planning mode/planning-skill.md`
-- `/developer` -> `Developer mode/developer-skill.md`
+- `/planning` -> `.agents/skills/planning-mode/SKILL.md`
+- `/developer` -> `.agents/skills/developer-mode/SKILL.md`
 
 ## Install
 
-```bash
-git clone https://github.com/NiessenWaffer/skill-ai-mode.git
-```
-
 ```powershell
 irm https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.ps1 | iex
+```
+
+The installer will explain what it does first and ask:
+
+```text
+Do you want to install? (y/n)
+```
+
+Optional full repo clone:
+
+```bash
+git clone https://github.com/NiessenWaffer/skill-ai-mode.git
 ```
 
 ## Purpose
@@ -26,5 +34,8 @@ irm https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.p
 
 ## Notes
 
-- Some AI editors still need a manual copy into their watched skill folder.
-- Use the repo as the source of truth for the active skill files.
+- The installer copies the active skill files into `~/.agents/skills` by default.
+- The active skills live at `~/.agents/skills/planning-mode/SKILL.md` and `~/.agents/skills/developer-mode/SKILL.md`.
+- Configure your AI CLI/editor to read that global skills folder.
+- Supported AI editors can install and recognize these skills.
+- Not every AI editor supports external skills automatically.
