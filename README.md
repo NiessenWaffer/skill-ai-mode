@@ -41,9 +41,9 @@ git clone https://github.com/NiessenWaffer/skill-ai-mode.git
 
 ## Notes
 
-- The installer copies `gemini.md`, `Planning mode/`, and `Developer mode/` into `~/.agents/skills` by default.
+- The installer downloads the GitHub archive, then copies `gemini.md`, `Planning mode/`, and `Developer mode/` into `~/.agents/skills` by default.
+- The global install copies the full `Planning mode/` and `Developer mode/` folders recursively, including nested `rules/` and `implementation rules/` files.
 - The global install uses the existing rule folders as the source of truth.
-- The global install also writes `~/.agents/skills/gemini.md` so the command routing exists outside the project.
 - Configure your AI CLI/editor to read that global skills folder.
 - Supported AI editors can install and recognize these skills.
 - Not every AI editor supports external skills automatically.
