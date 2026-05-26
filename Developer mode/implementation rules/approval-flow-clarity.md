@@ -3,10 +3,10 @@ MODE: implementation_approval_flow_clarity
 
 LOAD_POLICY:
 - must_read_when := approval_gate|confusing_redirect|external_handoff|clarity_risk|core_user_value_path
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_REASONING_POLICY
+- inherit := ../../gemini.md#COMMON_REASONING_POLICY
 PURPOSE:
 - prevent_hidden_approval_blockers
 - preserve_user_value_path

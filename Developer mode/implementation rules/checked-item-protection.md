@@ -3,10 +3,10 @@ MODE: implementation_check_state
 
 LOAD_POLICY:
 - must_read_when := checked_state_change|rework_risk|upstream_delta|bug_evidence
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_REASONING_POLICY
+- inherit := ../../gemini.md#COMMON_REASONING_POLICY
 PURPOSE:
 - preserve_checked_work
 RULES:

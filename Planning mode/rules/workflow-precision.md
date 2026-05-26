@@ -3,10 +3,10 @@ MODE: planning_workflow_precision
 
 LOAD_POLICY:
 - must_read_when := workflow_create|workflow_update|user_flow_precision|implementation_order
-- route := Planning mode/Planning.md
+- route := ../Planning.md
 
 TARGET:
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
+- inherit := ../Planning.md#LANGUAGE_POLICY
 PURPOSE:
 - workflow_sequence_clarity
 - implementation_transferability

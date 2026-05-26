@@ -3,10 +3,10 @@ MODE: planning_intent_validation
 
 LOAD_POLICY:
 - must_read_when := goal_drift|assumption_change|requirement_change|suggestion_review
-- route := Planning mode/Planning.md
+- route := ../Planning.md
 
 TARGET:
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
+- inherit := ../Planning.md#LANGUAGE_POLICY
 PURPOSE:
 - goal_alignment
 - assumption_control

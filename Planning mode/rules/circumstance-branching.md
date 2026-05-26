@@ -3,10 +3,10 @@ MODE: planning_circumstance_analysis
 
 LOAD_POLICY:
 - must_read_when := conditional_flow|optional_registration|approval_gate|guest_path|post_submit_creation|alternate_circumstance
-- route := Planning mode/Planning.md
+- route := ../Planning.md
 
 TARGET:
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
+- inherit := ../Planning.md#LANGUAGE_POLICY
 PURPOSE:
 - circumstance_scan
 - alternate_path_analysis

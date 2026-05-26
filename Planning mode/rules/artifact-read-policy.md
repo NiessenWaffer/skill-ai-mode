@@ -3,16 +3,16 @@ MODE: planning_artifact_read_policy
 
 LOAD_POLICY:
 - must_read_when := new_plan|revision|integration_context|artifact_graph|handoff|related_plan_overlap|backend_extension_needed|merge_candidate
-- route := Planning mode/Planning.md
+- route := ../Planning.md
 
 TARGET:
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
+- inherit := ../Planning.md#LANGUAGE_POLICY
 PURPOSE:
 - artifact_graph_loading
 - read_scope_control
 RULES:
-- sequence_allocation := inherit gemini.md#ARTIFACT_CONTRACT.sequence_id|sequence_gap
-- artifact_unit := inherit gemini.md#ARTIFACT_CONTRACT.artifact_unit
+- sequence_allocation := inherit ../../gemini.md#ARTIFACT_CONTRACT.sequence_id|sequence_gap
+- artifact_unit := inherit ../../gemini.md#ARTIFACT_CONTRACT.artifact_unit
 - index_row := sequence_id|artifact_name|artifact_scope|folder|plan_file|workflow_file|task_file|status|depends_on|connected_to
 - integration_context := related_plan_ids|shared_entities|shared_roles|shared_navigation|dependencies|handoff_points|separate_project_reason
 - connected_artifacts := connected_to|connected_files|connection_scope|connection_reason|read_required_for_revision|read_required_for_implementation

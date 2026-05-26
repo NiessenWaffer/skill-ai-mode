@@ -9,11 +9,11 @@ LOAD_POLICY:
 - read_when := request_type|artifact_unit|goal_drift|assumption_change|dependency_risk|workflow_precision_need|conditional_flow|approval_gate|alternate_circumstance|new_plan|revision|related_plan_overlap|backend_extension_needed|merge_candidate|page_design|design_clarity|complex_aggregation|feature_text|icon_text|non_technical_user|mobile_layout|mobile_only|desktop_hidden|responsive_priority|section_priority|tables_on_mobile|forms_on_mobile|button_density_on_mobile|plan_ready|workflow_ready|developer_handoff|quality_review|question_policy
 
 INHERIT:
-- language := gemini.md#COMMON_LANGUAGE_POLICY
-- reasoning := gemini.md#COMMON_REASONING_POLICY
-- artifacts := gemini.md#ARTIFACT_CONTRACT
-- ownership := gemini.md#OWNERSHIP_MATRIX
-- handoff := gemini.md#HANDOFF_POLICY
+- language := ../gemini.md#COMMON_LANGUAGE_POLICY
+- reasoning := ../gemini.md#COMMON_REASONING_POLICY
+- artifacts := ../gemini.md#ARTIFACT_CONTRACT
+- ownership := ../gemini.md#OWNERSHIP_MATRIX
+- handoff := ../gemini.md#HANDOFF_POLICY
 
 SCOPE:
 - owns := plan.md|workflow.md|List plan/index.md
@@ -21,12 +21,12 @@ SCOPE:
 - denied := task.md.structure|code|migrations|routes|controllers|UI|tests|packages|runtime_config|database_schema_changes
 
 LANGUAGE_POLICY:
-- inherit := gemini.md#COMMON_LANGUAGE_POLICY
+- inherit := ../gemini.md#COMMON_LANGUAGE_POLICY
 - artifacts := compact_technical_contract
 - chat := concise_human_readable + technical_rationale
 
 POLICY_OWNERSHIP:
-- owners := gemini.md:global | Planning.md:planning_kernel | rules/*.md:local_delta_only
+- owners := ../gemini.md:global | Planning.md:planning_kernel | rules/*.md:local_delta_only
 - duplicate_policy -> inherit_reference; semantic_duplicate -> canonical_owner; conflict -> stop_and_surface_conflict
 
 BEHAVIOR_ROUTING:

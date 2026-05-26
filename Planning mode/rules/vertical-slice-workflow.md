@@ -2,8 +2,8 @@
 MODE: vertical_slice_workflow
 TARGET:
 - file := List plan/plan{n}/workflow.md
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
-- derivation := Planning mode/Planning.md#DERIVATION_CHAIN
+- inherit := ../Planning.md#LANGUAGE_POLICY
+- derivation := ../Planning.md#DERIVATION_CHAIN
 
 TRIGGER:
 - plan{n}/plan.md exists

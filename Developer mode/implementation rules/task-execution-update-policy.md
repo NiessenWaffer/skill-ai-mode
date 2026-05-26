@@ -3,10 +3,10 @@ MODE: implementation_task_update_policy
 
 LOAD_POLICY:
 - must_read_when := checked_state_change|blocked_state|verification_notes|implementation_notes
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_LANGUAGE_POLICY
+- inherit := ../../gemini.md#COMMON_LANGUAGE_POLICY
 PURPOSE:
 - task_state_updates
 - preservation_of_checked_work

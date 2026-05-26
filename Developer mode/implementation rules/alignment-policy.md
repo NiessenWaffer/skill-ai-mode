@@ -3,10 +3,10 @@ MODE: implementation_alignment
 
 LOAD_POLICY:
 - must_read_when := alignment_gap|route_change|payload_change|image_alignment|contract_change
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_REASONING_POLICY
+- inherit := ../../gemini.md#COMMON_REASONING_POLICY
 PURPOSE:
 - keep_code_aligned_with_plan
 RULES:

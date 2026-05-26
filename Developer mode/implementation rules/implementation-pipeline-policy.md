@@ -3,10 +3,10 @@ MODE: implementation_pipeline_policy
 
 LOAD_POLICY:
 - must_read_when := task_domain|runtime_risk|alignment_gap|checked_state_change|verification_stage|approval_gate|confusing_redirect|external_handoff|clarity_risk
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_LANGUAGE_POLICY
+- inherit := ../../gemini.md#COMMON_LANGUAGE_POLICY
 PURPOSE:
 - execution_sequence
 - rule_loading_order

@@ -3,10 +3,10 @@ MODE: implementation_input_task_policy
 
 LOAD_POLICY:
 - must_read_when := plan_delta|workflow_delta|task_scope_setup|missing_plan_or_workflow
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_LANGUAGE_POLICY
+- inherit := ../../gemini.md#COMMON_LANGUAGE_POLICY
 PURPOSE:
 - input_validation
 - task_generation_gate

@@ -2,8 +2,8 @@
 MODE: plan_artifact_update
 TARGET:
 - file := List plan/plan{n}/plan.md
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
-- graph := Planning mode/Planning.md#ARTIFACT_GRAPH
+- inherit := ../Planning.md#LANGUAGE_POLICY
+- graph := ../Planning.md#ARTIFACT_GRAPH
 SCHEMA_GROUPS:
 - identity := sequence_id|artifact_name|artifact_folder|artifact_scope|depends_on|status|mode
 - goal := project_goal|target_users|success_criteria
@@ -24,7 +24,7 @@ STATE:
 - draft -> blocker_info.missing
 - ready_for_workflow -> blocker_questions.count = 0 AND integration_context.valid
 CONTEXT_RULES:
-- plan2_plus := Planning mode/Planning.md#ARTIFACT_GRAPH.plan2_plus
+- plan2_plus := ../Planning.md#ARTIFACT_GRAPH.plan2_plus
 - integration_context.one_of := related_plan_ids|shared_entities|shared_roles|shared_navigation|dependencies|handoff_points|separate_project_reason
 - connected_artifacts.required_if := direct_dependency|shared_user_journey|shared_data_contract|shared_permission_rule|shared_navigation_transition
 - connected_artifacts.schema := connected_to|connected_files|connection_scope|connection_reason|read_required_for_revision|read_required_for_implementation
@@ -45,9 +45,9 @@ REVISION:
 - distinct_artifact -> create next plan{n}
 - preserve := sequence_id|artifact_name|artifact_folder unless rename_explicit
 INVARIANTS:
-- quality_gates := Planning mode/Planning.md#QUALITY_GATES
-- artifact_unit := Planning mode/Planning.md#ARTIFACT_GRAPH.artifact_unit
-- dependency_policy := Planning mode/Planning.md#DEPENDENCY_POLICY
+- quality_gates := ../Planning.md#QUALITY_GATES
+- artifact_unit := ../Planning.md#ARTIFACT_GRAPH.artifact_unit
+- dependency_policy := ../Planning.md#DEPENDENCY_POLICY
 
 
 

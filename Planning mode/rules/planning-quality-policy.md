@@ -3,10 +3,10 @@ MODE: planning_quality_policy
 
 LOAD_POLICY:
 - must_read_when := ready_for_workflow|approval_request|quality_review|question_policy
-- route := Planning mode/Planning.md
+- route := ../Planning.md
 
 TARGET:
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
+- inherit := ../Planning.md#LANGUAGE_POLICY
 PURPOSE:
 - plan_quality_gate
 - review_control

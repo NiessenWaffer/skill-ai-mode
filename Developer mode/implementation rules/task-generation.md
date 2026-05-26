@@ -3,10 +3,10 @@ MODE: task_generation_validation
 
 LOAD_POLICY:
 - must_read_when := task.md_generation|plan_delta|workflow_delta|task_scope_setup
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_LANGUAGE_POLICY
+- inherit := ../../gemini.md#COMMON_LANGUAGE_POLICY
 PURPOSE:
 - derive task.md from plan.md + workflow.md
 RULES:

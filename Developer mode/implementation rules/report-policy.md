@@ -3,10 +3,10 @@ MODE: implementation_report_policy
 
 LOAD_POLICY:
 - must_read_when := report_generation|blocked_items|unverified_items|functional_result
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_LANGUAGE_POLICY
+- inherit := ../../gemini.md#COMMON_LANGUAGE_POLICY
 PURPOSE:
 - concise_execution_report
 - traceable_output

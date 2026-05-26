@@ -3,10 +3,10 @@ MODE: implementation_runtime_safety
 
 LOAD_POLICY:
 - must_read_when := runtime_risk|env_change|dependency_install|config_change|preflight
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_REASONING_POLICY
+- inherit := ../../gemini.md#COMMON_REASONING_POLICY
 PURPOSE:
 - safe_code_change
 - state_inspection

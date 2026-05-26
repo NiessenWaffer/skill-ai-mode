@@ -3,10 +3,10 @@ MODE: implementation_verification
 
 LOAD_POLICY:
 - must_read_when := verification_stage|checked_state_change|flow_validation|task_done_review
-- route := Developer mode/developer.md
+- route := ../developer.md
 
 TARGET:
-- inherit := gemini.md#COMMON_REASONING_POLICY
+- inherit := ../../gemini.md#COMMON_REASONING_POLICY
 PURPOSE:
 - evidence_based_completion
 RULES:

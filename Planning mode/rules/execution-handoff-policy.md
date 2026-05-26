@@ -3,10 +3,10 @@ MODE: planning_execution_handoff
 
 LOAD_POLICY:
 - must_read_when := plan_ready|workflow_ready|developer_handoff|revision_cascade
-- route := Planning mode/Planning.md
+- route := ../Planning.md
 
 TARGET:
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
+- inherit := ../Planning.md#LANGUAGE_POLICY
 PURPOSE:
 - developer_handoff
 - execution_order_control

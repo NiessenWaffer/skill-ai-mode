@@ -3,10 +3,10 @@ MODE: planning_contract_validation
 
 LOAD_POLICY:
 - must_read_when := page_design|section_actions|data_contract|state_contract|missing_interactivity
-- route := Planning mode/Planning.md
+- route := ../Planning.md
 
 TARGET:
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
+- inherit := ../Planning.md#LANGUAGE_POLICY
 PURPOSE:
 - section_completeness
 - workflow_precision

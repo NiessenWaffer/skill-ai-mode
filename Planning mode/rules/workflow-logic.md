@@ -1,7 +1,7 @@
 # Workflow Logic Contract
 MODE: workflow_logic_validator
 INHERIT:
-- language_policy := Planning mode/Planning.md#LANGUAGE_POLICY
+- language_policy := ../Planning.md#LANGUAGE_POLICY
 TRIGGER:
 - candidate := field|page|role|feature|workflow
 - validate plan.scope

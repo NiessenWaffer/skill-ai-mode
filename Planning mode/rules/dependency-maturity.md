@@ -3,10 +3,10 @@ MODE: planning_dependency_validation
 
 LOAD_POLICY:
 - must_read_when := dependency_risk|approval_flow|permission_dependency|future_dependency
-- route := Planning mode/Planning.md
+- route := ../Planning.md
 
 TARGET:
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
+- inherit := ../Planning.md#LANGUAGE_POLICY
 PURPOSE:
 - dependency_safety
 - hidden_dependency_prevention

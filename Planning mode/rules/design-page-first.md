@@ -1,7 +1,7 @@
 # Page Design Rule
 MODE: page_design_first
 TARGET:
-- inherit := Planning mode/Planning.md#LANGUAGE_POLICY
+- inherit := ../Planning.md#LANGUAGE_POLICY
 TRIGGER:
 - request_type := user_facing_page|screen
 - examples := homepage|landing_page|registration_page|form_page|listing_page|dashboard_page
