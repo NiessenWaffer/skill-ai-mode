@@ -4,8 +4,8 @@ Minimal AI skill repo for supported AI editors.
 
 ## Active skills
 
-- `/planning` -> `.agents/skills/planning-mode/SKILL.md`
-- `/developer` -> `.agents/skills/developer-mode/SKILL.md`
+- `/planning` -> `Planning mode/Planning.md`
+- `/developer` -> `Developer mode/developer.md`
 
 ## Install
 
@@ -32,10 +32,18 @@ git clone https://github.com/NiessenWaffer/skill-ai-mode.git
 - design -> clear mobile-first UI, simple tables/forms, visible actions
 - planning overlap -> revise/connect related plans instead of isolating them
 
+## Project setup
+
+- Keep `List plan/` inside the project for plan artifacts.
+- Do **not** add `Planning mode/`, `Developer mode/`, `.agents/`, or `gemini.md` inside every project.
+- The CLI install places the existing `Planning mode/` and `Developer mode/` folders plus `gemini.md` in the global skills folder instead.
+- After install, use `/planning` or `/developer` from the AI CLI/editor when it is pointed at the global skills folder.
+
 ## Notes
 
-- The installer copies the active skill files into `~/.agents/skills` by default.
-- The active skills live at `~/.agents/skills/planning-mode/SKILL.md` and `~/.agents/skills/developer-mode/SKILL.md`.
+- The installer copies `gemini.md`, `Planning mode/`, and `Developer mode/` into `~/.agents/skills` by default.
+- The global install uses the existing rule folders as the source of truth.
+- The global install also writes `~/.agents/skills/gemini.md` so the command routing exists outside the project.
 - Configure your AI CLI/editor to read that global skills folder.
 - Supported AI editors can install and recognize these skills.
 - Not every AI editor supports external skills automatically.

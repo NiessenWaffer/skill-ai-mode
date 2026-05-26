@@ -8,7 +8,7 @@ $repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $targetRoot = $Destination
 
 Write-Host "This will install skill-ai-mode into your global AI skills folder: $targetRoot"
-Write-Host "It copies the planning and developer skill files into `.agents\skills\planning-mode\SKILL.md` and `.agents\skills\developer-mode\SKILL.md`."
+Write-Host "It copies gemini.md plus the existing Planning mode and Developer mode folders so the rules remain the source of truth."
 $confirmation = Read-Host "Do you want to install? (y/n)"
 if ($confirmation -notin @('y', 'Y', 'yes', 'YES')) {
     Write-Host "Install cancelled."
@@ -20,25 +20,23 @@ if (-not (Test-Path $targetRoot)) {
 }
 
 
-$skillMap = @(
-    @{ Source = 'gemini.md'; Destination = 'gemini.md' },
-    @{ Source = '.agents\skills\planning-mode\SKILL.md'; Destination = 'planning-mode\SKILL.md' },
-    @{ Source = '.agents\skills\developer-mode\SKILL.md'; Destination = 'developer-mode\SKILL.md' }
+if (-not (Test-Path (Join-Path $repoRoot 'gemini.md'))) {
+    throw 'Missing source file: gemini.md'
+}
+
+$copyPaths = @(
+    'gemini.md',
+    'Planning mode',
+    'Developer mode'
 )
 
-foreach ($item in $skillMap) {
-    $source = Join-Path $repoRoot $item.Source
+foreach ($relativePath in $copyPaths) {
+    $source = Join-Path $repoRoot $relativePath
     if (-not (Test-Path $source)) {
-        throw "Missing source file: $($item.Source)"
+        throw "Missing source path: $relativePath"
     }
 
-    $destination = Join-Path $targetRoot $item.Destination
-    $destinationDir = Split-Path -Parent $destination
-    if (-not (Test-Path $destinationDir)) {
-        New-Item -ItemType Directory -Path $destinationDir | Out-Null
-    }
-
-    Copy-Item -Path $source -Destination $destination -Force
+    Copy-Item -Path $source -Destination $targetRoot -Recurse -Force
 }
 
 Write-Host "Installed skill-ai-mode to $targetRoot"
