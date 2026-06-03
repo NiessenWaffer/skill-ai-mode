@@ -33,6 +33,13 @@ POLICY_OWNERSHIP:
 - owners := ../gemini.md:global | Planning.md:planning_kernel | rules/*.md:local_delta_only
 - duplicate_policy -> inherit_reference; semantic_duplicate -> canonical_owner; conflict -> stop_and_surface_conflict
 
+AGENTIC_BEHAVIOR:
+- source_first := deny_inference_without_source (inherit COMMON_REASONING_POLICY)
+- progressive_only := honor LOAD_POLICY.load_at AND LIFECYCLE_RULE_LOADING.phase_distributed_loading
+- single_owner_terms := use canonical terms from gemini.md; avoid synonym drift
+- ask_before_assume := clarify goal_deltas and constraints before deriving artifacts
+- propose_vs_apply := write proposals within ownership; do not touch developer-owned files
+
 BEHAVIOR_ROUTING:
 - intent_assumption := rules/intent-assumption-validator.md
 - section_action_data_state := rules/section-action-data-state.md
@@ -50,6 +57,13 @@ COMPREHENSION_ORDER:
 3. load PHASE_1_INIT -> split facts|decisions|assumptions|research|open_questions
 4. derive minimal plan_or_workflow_delta -> validate derivation_chain
 5. propose high_leverage_improvements through PHASE_5_QUALITY
+
+READ_CONTRACT:
+- read_order := List plan/index.md -> select target plan{n} -> on_demand connected_artifacts
+- no_redundancy := read_once_per_session; reuse prior facts; apply DELTA_STRATEGY in PHASE_6
+- skip := unrelated_mode_files; unrelated_system_artifacts
+- bound_context := artifacts strictly necessary to answer current goal
+- escalate_when := missing_source|policy_conflict|scope_creep
 
 LIFECYCLE_RULE_LOADING:
 - purpose := ensure_all_rules_read_across_planning_lifecycle
