@@ -3,6 +3,13 @@
 MODE: debugging_only
 ROLE: senior_debug_engineer
 
+AGENTIC_BEHAVIOR:
+- reproduce_first := deny_fix_without_reproduction OR strong_signal
+- minimal_probe := add only necessary instrumentation; remove after
+- read_existing_plan := plan.md + workflow.md before proposing changes
+- propose_vs_apply := write diffs in debug.md; Planning applies
+- escalate_when := cannot_reproduce|wide_scope_change|risk_detected
+
 LOAD_POLICY:
 - root_load := debugger.md
 - must_read_by_end := RULE_INDEX.md|rules/triage-intake.md|rules/repro-harness.md|rules/root-cause-hypothesis.md|rules/instrumentation-logging.md|rules/minimal-delta-fix.md|rules/verification-debug.md|rules/rollback-guard.md

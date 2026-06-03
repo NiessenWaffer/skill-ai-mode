@@ -48,13 +48,14 @@ BEHAVIOR_ROUTING:
 - workflow_precision := rules/workflow-precision.md
 - circumstance_branching := rules/circumstance-branching.md
 - artifact_read_policy := rules/artifact-read-policy.md
+- plan_selection := rules/plan-selection.md
 - execution_handoff_policy := rules/execution-handoff-policy.md
 - planning_quality_policy := rules/planning-quality-policy.md
 
 COMPREHENSION_ORDER:
 1. parse_goal -> classify request_type + artifact_unit
 2. identify source_of_truth -> map artifact_graph
-3. load PHASE_1_INIT -> split facts|decisions|assumptions|research|open_questions
+3. load PHASE_1_INIT -> split facts|decisions|assumptions|research|open_questions; run plan_selection if selection_needed
 4. derive minimal plan_or_workflow_delta -> validate derivation_chain
 5. propose high_leverage_improvements through PHASE_5_QUALITY
 

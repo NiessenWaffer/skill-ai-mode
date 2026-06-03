@@ -42,6 +42,7 @@ IMPLEMENTATION_RULES:
 - implementation_pipeline_policy := implementation rules/implementation-pipeline-policy.md
 - task_execution_update_policy := implementation rules/task-execution-update-policy.md
 - report_policy := implementation rules/report-policy.md
+- code_diff_discipline := implementation rules/code-diff-discipline.md
 
 SCOPE:
 - owns := task.md.structure|task.md.execution_state|code|routes|controllers|tests|runtime_config|build_pipeline
