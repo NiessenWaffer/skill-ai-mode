@@ -48,3 +48,20 @@ Write-Host "SYSTEM_FILE=$systemPath"
 Write-Host "USER_FILE=$userPath"
 Write-Host "Next: Use your AI CLI to send a system message from SYSTEM_FILE and a user message from USER_FILE."
 Write-Host "Tip: Set AI_PROVIDER for formatting hints; set AI_SKILLS_DIR to override skills location."
+
+# If a provider-agnostic CLI template is provided, print a ready-to-run command
+$template = $env:AI_CLI_TEMPLATE
+if ($template -and $template.Trim().Length -gt 0) {
+  $provider = $env:AI_PROVIDER
+  $model = $env:MODEL
+  if (-not $model -or $model.Trim().Length -eq 0) {
+    switch -Regex ($provider) {
+      'anthropic|claude' { $model = $env:ANTHROPIC_MODEL; if (-not $model) { $model = 'claude-3-opus-20240229' } }
+      'openai|gpt' { $model = $env:OPENAI_MODEL; if (-not $model) { $model = 'gpt-4o' } }
+      'gemini|google' { $model = $env:GEMINI_MODEL; if (-not $model) { $model = 'gemini-1.5-pro' } }
+      default { $model = 'generic' }
+    }
+  }
+  $cmd = $template.Replace('{SYSTEM_FILE}', $systemPath).Replace('{USER_FILE}', $userPath).Replace('{MODEL}', $model)
+  Write-Host ("COMMAND=$cmd")
+}
