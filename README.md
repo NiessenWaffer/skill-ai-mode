@@ -1,10 +1,3 @@
-## Debugging Mode Overview
-
-- Purpose: isolate and resolve bugs with minimal, safe changes.
-- Artifact: `List plan/plan{n}/debug.md` (debug plan only; not a feature plan).
-- Phases: `D1_INTAKE → D2_REPRO → D3_SCOPE_IMPACT → D4_HYPOTHESES → D5_INSTRUMENT → D6_FIX → D7_VERIFY → D8_POSTMORTEM`.
-- Safety: minimal-delta fixes, follow runtime-safety, no secrets/PII, no production data writes.
-
 # skill-ai-mode
 
 Minimal AI skill repo for supported AI editors.
@@ -47,7 +40,7 @@ pwsh -ExecutionPolicy Bypass -File .\install.ps1 -Destination "C:\Users\<you>\.a
 ```
 
 - Installs to: `~/.agents/skills` by default
-- Copies: `gemini.md`, `Planning mode/`, `Developer mode/` into the global skills folder
+- Copies: `gemini.md`, `Planning mode/`, `Developer mode/`, `Debugging mode/` into the global skills folder
 - Places no files in your project folder
 - After install, configure your AI CLI/editor to use `~/.agents/skills` as the skills source
 
@@ -110,6 +103,13 @@ This repo is provider-agnostic. It works with Gemini, Claude (Anthropic), OpenAI
 - **Copilot Chat**: System messages may be limited. The router auto-includes a MODE/ROLE/SCOPE header in the first answer.
 - **Generic**: Uses compact technical contract style and fenced code by default.
 
+## Debugging Mode Overview
+
+- Purpose: isolate and resolve bugs with minimal, safe changes.
+- Artifact: `List plan/plan{n}/debug.md` (debug plan only; not a feature plan).
+- Phases: `D1_INTAKE → D2_REPRO → D3_SCOPE_IMPACT → D4_HYPOTHESES → D5_INSTRUMENT → D6_FIX → D7_VERIFY → D8_POSTMORTEM`.
+- Safety: minimal-delta fixes, follow runtime-safety, no secrets/PII, no production data writes.
+
 ## CLI Usage (All Providers)
 
 If you prefer a pure terminal flow, use the helper scripts to assemble system/user messages for your AI CLI:
@@ -127,6 +127,12 @@ If you prefer a pure terminal flow, use the helper scripts to assemble system/us
     # Note the output: SYSTEM_FILE=... and USER_FILE=...
     # Send those to your AI CLI as system and user messages.
     ```
+  - Debug:
+    ```powershell
+    ./debugging.ps1 -ProjectRoot "C:\path\to\your\project" -PlanUnit "List plan/plan1"
+    # Note the output: SYSTEM_FILE=... and USER_FILE=...
+    # Send those to your AI CLI as system and user messages.
+    ```
 
 - macOS/Linux:
   - Planning:
@@ -138,6 +144,12 @@ If you prefer a pure terminal flow, use the helper scripts to assemble system/us
   - Developer:
     ```bash
     ./developer.sh PROJECT_ROOT="/path/to/project" PLAN_UNIT="List plan/plan1"
+    # Note the output: SYSTEM_FILE=... and USER_FILE=...
+    # Send those to your AI CLI as system and user messages.
+    ```
+  - Debug:
+    ```bash
+    ./debugging.sh PROJECT_ROOT="/path/to/project" PLAN_UNIT="List plan/plan1"
     # Note the output: SYSTEM_FILE=... and USER_FILE=...
     # Send those to your AI CLI as system and user messages.
     ```

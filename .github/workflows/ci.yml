@@ -47,6 +47,7 @@ jobs:
             sha256sum gemini.md || true;
             sha256sum "Planning mode/Planning.md" || true;
             sha256sum "Developer mode/developer.md" || true;
+            sha256sum "Debugging mode/debugger.md" || true;
             sha256sum install.ps1 || true;
             sha256sum install.sh || true;
             sha256sum SKILLS_VERSION || true;
@@ -68,6 +69,7 @@ jobs:
           test -f "$dest/gemini.md"
           test -f "$dest/Planning mode/Planning.md"
           test -f "$dest/Developer mode/developer.md"
+          test -f "$dest/Debugging mode/debugger.md"
           test -f "$dest/SKILLS_VERSION" || true
 
   installer_windows:
@@ -85,4 +87,5 @@ jobs:
           if (-not (Test-Path (Join-Path $dest 'gemini.md'))) { throw 'Missing gemini.md' }
           if (-not (Test-Path (Join-Path $dest 'Planning mode/Planning.md'))) { throw 'Missing Planning.md' }
           if (-not (Test-Path (Join-Path $dest 'Developer mode/developer.md'))) { throw 'Missing developer.md' }
+          if (-not (Test-Path (Join-Path $dest 'Debugging mode/debugger.md'))) { throw 'Missing debugger.md' }
           if (-not (Test-Path (Join-Path $dest 'SKILLS_VERSION'))) { Write-Host 'SKILLS_VERSION not found (optional)'; }

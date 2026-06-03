@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Cross-platform installer (macOS/Linux)
-# Copies gemini.md, Planning mode/, and Developer mode/ into ~/.agents/skills (or a custom destination)
+# Copies gemini.md, Planning mode/, Developer mode/, and Debugging mode/ into ~/.agents/skills (or a custom destination)
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.sh | bash -s -- -y
 #   curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.sh | bash -s -- -y -d "$HOME/.agents/skills"
@@ -35,7 +35,7 @@ mkdir -p "$EXTRACT_PATH"
 
 if [[ $AUTO_YES -eq 0 ]]; then
   echo "This will install skill-ai-mode into your global AI skills folder: $DESTINATION"
-  echo "It downloads the GitHub repo archive, then copies gemini.md plus the full Planning mode and Developer mode folders recursively."
+  echo "It downloads the GitHub repo archive, then copies gemini.md plus the full Planning, Developer, and Debugging mode folders recursively."
   read -r -p "Do you want to install? (y/n) " CONFIRM
   case "$CONFIRM" in
     y|Y|yes|YES) ;; 
@@ -69,6 +69,7 @@ mkdir -p "$DESTINATION"
 cp -R "$ROOT_DIR/gemini.md" "$DESTINATION/"
 cp -R "$ROOT_DIR/Planning mode" "$DESTINATION/"
 cp -R "$ROOT_DIR/Developer mode" "$DESTINATION/"
+cp -R "$ROOT_DIR/Debugging mode" "$DESTINATION/"
 cp -R "$ROOT_DIR/SKILLS_VERSION" "$DESTINATION/" 2>/dev/null || true
 
 echo "Installed skill-ai-mode to $DESTINATION"

@@ -16,7 +16,7 @@ $zipPath = Join-Path $tempRoot 'repo.zip'
 $extractPath = Join-Path $tempRoot 'extract'
 
 Write-Host "This will install skill-ai-mode into your global AI skills folder: $Destination"
-Write-Host "It downloads the GitHub repo archive, then copies gemini.md plus the full Planning mode and Developer mode folders recursively, including nested rule files, so the rules remain the source of truth."
+Write-Host "It downloads the GitHub repo archive, then copies gemini.md plus the full Planning, Developer, and Debugging mode folders recursively, including nested rule files, so the rules remain the source of truth."
 if (-not $Yes) {
     $confirmation = Read-Host "Do you want to install? (y/n)"
     if ($confirmation -notin @('y', 'Y', 'yes', 'YES')) {
@@ -46,6 +46,7 @@ try {
         'gemini.md',
         'Planning mode',
         'Developer mode',
+        'Debugging mode',
         'SKILLS_VERSION'
     )
 

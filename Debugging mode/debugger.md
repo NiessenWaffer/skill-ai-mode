@@ -19,7 +19,7 @@ INHERIT:
 DEBUG_ARTIFACT:
 - file := List plan/plan{n}/debug.md
 - semantics := debug_plan_only (not a product feature plan)
-- allowed_links := plan.md|workflow.md (read-only)
+- allowed_links := plan.md|workflow.md (read + propose_revision; actual edits by Planning mode)
 
 DELTA_STRATEGY:
 - delta_read := true
@@ -27,6 +27,11 @@ DELTA_STRATEGY:
 - delta_cache.scope := current_session|plan{n}
 - delta_cache.key := absolute_path
 - delta_cache.update := after_successful_read -> store {path, sha256, mtime}
+
+RELATED_ARTIFACTS_READ:
+- read_existing_unit := List plan/plan{n}/plan.md + workflow.md
+- read_related_units := scan List plan/index.md for overlapping flows
+- selection := user_confirms_target_plan{n}
 
 PHASES:
 
@@ -47,6 +52,7 @@ D3_SCOPE_IMPACT:
 - scan_git := recent_diffs_related_to_area
 - test_inventory := relevant_tests + coverage_gaps
 - impact_surface := user_flows|data_entities|environments
+- read_plan_artifacts := plan.md + workflow.md (target plan{n})
 
 D4_HYPOTHESES:
 - generate_prioritized_hypotheses := 3..7 items
@@ -72,7 +78,7 @@ D8_POSTMORTEM:
 - rc_summary := what_broke|why|how_detected
 - prevention := tests|lint|alerts|process
 - update debug.md := final_notes|fix_hash|verification
-- IF requires_feature_change -> escalate_to Planning mode
+- IF requires_feature_change -> propose_revisions := plan.md|workflow.md (write diff/suggestions into debug.md) -> escalate_to Planning mode to apply
 
 SAFETY:
 - destructive_operations := denied
