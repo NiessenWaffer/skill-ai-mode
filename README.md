@@ -101,6 +101,50 @@ This repo is provider-agnostic. It works with Gemini, Claude (Anthropic), OpenAI
 - **Copilot Chat**: System messages may be limited. The router auto-includes a MODE/ROLE/SCOPE header in the first answer.
 - **Generic**: Uses compact technical contract style and fenced code by default.
 
+## CLI Usage (All Providers)
+
+If you prefer a pure terminal flow, use the helper scripts to assemble system/user messages for your AI CLI:
+
+- Windows (PowerShell):
+  - Planning:
+    ```powershell
+    ./planning.ps1 -ProjectRoot "C:\path\to\your\project" -PlanUnit "List plan/plan1"
+    # Note the output: SYSTEM_FILE=... and USER_FILE=...
+    # Send those to your AI CLI as system and user messages.
+    ```
+  - Developer:
+    ```powershell
+    ./developer.ps1 -ProjectRoot "C:\path\to\your\project" -PlanUnit "List plan/plan1"
+    # Note the output: SYSTEM_FILE=... and USER_FILE=...
+    # Send those to your AI CLI as system and user messages.
+    ```
+
+- macOS/Linux:
+  - Planning:
+    ```bash
+    ./planning.sh PROJECT_ROOT="/path/to/project" PLAN_UNIT="List plan/plan1"
+    # Note the output: SYSTEM_FILE=... and USER_FILE=...
+    # Send those to your AI CLI as system and user messages.
+    ```
+  - Developer:
+    ```bash
+    ./developer.sh PROJECT_ROOT="/path/to/project" PLAN_UNIT="List plan/plan1"
+    # Note the output: SYSTEM_FILE=... and USER_FILE=...
+    # Send those to your AI CLI as system and user messages.
+    ```
+
+Per-provider examples (to be added based on your CLI):
+- Anthropic/Claude CLI:
+  ```bash
+  anthropic messages create \
+    --model claude-3-opus-20240229 \
+    --system @"$SYSTEM_FILE" \
+    --input-file @"$USER_FILE"
+  ```
+- OpenAI CLI: pass system and user via input files
+- Gemini CLI: pass system and user via input files
+- Copilot CLI: if unsupported, run via editor chat instead
+
 ## Versioning & Upgrade
 - This skills bundle is versioned via `SKILLS_VERSION` (semver). Installers copy this file.
 - To check installed version:
