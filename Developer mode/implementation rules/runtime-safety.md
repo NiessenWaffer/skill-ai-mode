@@ -20,6 +20,10 @@ RULES:
 - existing_dependency -> reuse_installed_version; reinstall := denied
 - package_manager := detect_from lockfile; mixed_package_manager := denied unless user_approved
 - existing_config_file -> patch_minimal_delta; full_replace := denied unless explicit_user_request
+- production_environment_detected -> destructive_operations := denied
+- IF env_APP_ENV_production|env_NODE_ENV_production -> schema_change|data_wipe|destructive_command := denied
+- database_connection_string_inspection_first := true
+- IF database_contains_real_user_data AND destructive_command_detected -> stop_and_request_user_approval
 OUTPUT:
 - risk_notes
 - implementation_notes

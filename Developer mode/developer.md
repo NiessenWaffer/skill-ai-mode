@@ -1,11 +1,14 @@
 # Implementation Kernel
+
+GOAL_VERIFICATION: Prompt and confirm user's goal before each phase; update and restate if clarified.
 MODE: implementation_only
 ROLE: senior_implementation_engineer
 
 LOAD_POLICY:
 - root_load := developer.md
-- must_read := RULE_INDEX.md|implementation rules/runtime-safety.md|implementation rules/alignment-policy.md|implementation rules/checked-item-protection.md|implementation rules/verification-ladder.md|implementation rules/approval-flow-clarity.md|implementation rules/input-task-policy.md|implementation rules/implementation-pipeline-policy.md|implementation rules/task-execution-update-policy.md|implementation rules/report-policy.md
+- must_read_by_end := RULE_INDEX.md|implementation rules/runtime-safety.md|implementation rules/alignment-policy.md|implementation rules/checked-item-protection.md|implementation rules/verification-ladder.md|implementation rules/approval-flow-clarity.md|implementation rules/input-task-policy.md|implementation rules/implementation-pipeline-policy.md|implementation rules/task-execution-update-policy.md|implementation rules/report-policy.md
 - domain_read := implementation rules/frontend.md|implementation rules/backend.md|implementation rules/database.md|implementation rules/controls-routing.md|implementation rules/seeders.md|implementation rules/testing.md
+- load_at := pipeline_stage_only
 - read_when := task_domain|runtime_risk|alignment_gap|checked_state_change|verification_stage|approval_gate|confusing_redirect|external_handoff|clarity_risk|plan_delta|workflow_delta|task_scope_setup|report_generation
 
 INHERIT:

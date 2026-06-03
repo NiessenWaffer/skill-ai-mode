@@ -1,0 +1,14 @@
+{
+  "name": "skill-ai-mode",
+  "version": "1.0.0",
+  "description": "AI skill installer for skill-ai-mode (cross-platform)",
+  "bin": {
+    "skill-ai-mode-install": "./install.js"
+  },
+  "dependencies": {
+    "inquirer": "^9.0.0",
+    "fs-extra": "^11.0.0",
+    "node-fetch": "^2.6.7",
+    "adm-zip": "^0.5.9"
+  }
+}

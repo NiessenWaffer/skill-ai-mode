@@ -14,6 +14,13 @@ RULES:
 - load gemini.md -> confirm developer -> load developer.md
 - IF request matches escalation -> stop; route Planning mode with requested_delta + affected plan{n}
 - read selected plan.md + workflow.md
+- delta_read := true
+- delta_detection := hash_preferred(SHA-256), fallback := mtime
+- delta_cache.scope := current_session|plan{n}
+- delta_cache.key := absolute_path
+- delta_cache.update := after_successful_read -> store {path, sha256, mtime}
+- plan_workflow_delta_read := apply delta rules to plan.md|workflow.md
+- project_scan_delta_read := apply delta rules to inspected files
 - generate_or_patch task.md from plan.md + workflow.md
 - select one current_unchecked_item from task.md
 - load implementation rule files by task domain + task_generation + runtime_safety + alignment + checked_item_protection + verification + approval_flow_clarity

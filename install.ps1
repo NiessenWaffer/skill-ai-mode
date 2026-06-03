@@ -1,5 +1,6 @@
 param(
-    [string]$Destination = "$env:USERPROFILE\.agents\skills"
+    [string]$Destination = "$env:USERPROFILE\.agents\skills",
+    [switch]$Yes
 )
 
 $ErrorActionPreference = 'Stop'
@@ -16,10 +17,12 @@ $extractPath = Join-Path $tempRoot 'extract'
 
 Write-Host "This will install skill-ai-mode into your global AI skills folder: $Destination"
 Write-Host "It downloads the GitHub repo archive, then copies gemini.md plus the full Planning mode and Developer mode folders recursively, including nested rule files, so the rules remain the source of truth."
-$confirmation = Read-Host "Do you want to install? (y/n)"
-if ($confirmation -notin @('y', 'Y', 'yes', 'YES')) {
-    Write-Host "Install cancelled."
-    exit 0
+if (-not $Yes) {
+    $confirmation = Read-Host "Do you want to install? (y/n)"
+    if ($confirmation -notin @('y', 'Y', 'yes', 'YES')) {
+        Write-Host "Install cancelled."
+        exit 0
+    }
 }
 
 New-Item -ItemType Directory -Path $tempRoot -Force | Out-Null
@@ -42,7 +45,8 @@ try {
     $copyPaths = @(
         'gemini.md',
         'Planning mode',
-        'Developer mode'
+        'Developer mode',
+        'SKILLS_VERSION'
     )
 
     foreach ($relativePath in $copyPaths) {
@@ -55,6 +59,10 @@ try {
     }
 
     Write-Host "Installed skill-ai-mode to $Destination"
+    if (Test-Path (Join-Path $Destination 'SKILLS_VERSION')) {
+        $ver = Get-Content -Raw (Join-Path $Destination 'SKILLS_VERSION')
+        Write-Host ("Skills version: {0}" -f ($ver.Trim()))
+    }
     Write-Host "Install complete. Configure your AI CLI/editor to read $Destination."
 }
 finally {

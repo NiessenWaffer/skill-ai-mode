@@ -30,3 +30,9 @@ CHECK_STATE_RULE:
 - check_state.checked requires TASK_FUNCTIONALITY_GATE.pass
 - advance_to_next_task requires current_task.functional_pass = true OR blocked_state.recorded
 - verification_evidence required before check_state = checked
+
+TEST_DATABASE_SAFETY:
+- test_database_refresh|test_truncate_tables|test_RefreshDatabase := denied unless isolated_test_database
+- IF shared_database_detected AND test_destructive_trait_detected -> stop_and_request_user_approval
+- test_run_against_production_database := denied
+- test_seed_after_truncate -> verify_backup_or_explicit_user_approval

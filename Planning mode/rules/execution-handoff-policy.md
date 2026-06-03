@@ -22,7 +22,10 @@ RULES:
 - handoff_input := plan.md + workflow.md
 - task_generation_owner := developer
 - handoff_requires := plan.status = ready_for_workflow AND workflow.status = ready_for_developer_tasking
-- task.md may exist empty before developer_task_generation
+- planning_creates_task.md := denied
+- planning_touches_task.md := denied
+- task.md creation_owner := developer_only
+- developer_generates task.md when entering_developer_mode
 - developer regenerates task.md when plan_or_workflow_delta exists
 - existing_artifact_revision -> patch same plan{n}; do_not_create_new_sequence
 - distinct_page|distinct_workflow|distinct_feature -> create next plan{n}

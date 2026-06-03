@@ -18,6 +18,38 @@ COMMAND_ALIASES:
 - plan|spec|workflow|revise_plan -> planning
 - implement|build|code|fix|task -> developer
 
+PROVIDER_ADAPTERS:
+- provider_detection := env.AI_PROVIDER OR editor_config.provider_name OR first_run_prompt("Which AI are you using? (gemini|anthropic|openai|copilot|generic)")
+- default_provider := generic
+- profiles:
+  - generic:
+    - message_style := compact_technical_contract + concise_chat
+    - formatting := markdown + fenced_code + short display lists
+    - tool_use := none_assumed
+  - gemini:
+    - message_style := compact_technical_contract
+    - formatting := markdown + fenced_code
+  - anthropic:
+    - message_style := compact_technical_contract
+    - formatting := markdown + fenced_code; avoid exotic markup
+  - openai:
+    - message_style := compact_technical_contract
+    - formatting := markdown + fenced_code
+  - copilot:
+    - message_style := concise_steps + minimal prose
+    - formatting := markdown + fenced_code; system_message_may_be_limited := true
+    - system_absent_fallback := prepend header "MODE + SCOPE + OWNER" in first response
+- alias_map:
+  - claude -> anthropic
+  - gpt|gpt-4|gpt-4o|openai-assistant -> openai
+  - github-copilot|copilot-chat -> copilot
+  - antigravity|agy|unknown -> generic
+- adaptation_rules:
+  - if system_message_absent -> embed MODE|ROLE|SCOPE header at top of first reply
+  - if token_budget_small -> split long outputs across phases/stages (progressive_only honored)
+  - unrelated_mode_files -> skip (per READ_POLICY)
+  - tool_calling_unavailable -> avoid tool syntax; communicate actions plainly
+
 COMMON_LANGUAGE_POLICY:
 - syntax := compact_technical_contract
 - units := labels|enums|predicates|IF_THEN|arrows|tables|checkboxes
@@ -31,7 +63,10 @@ COMMON_REASONING_POLICY:
 - mode_boundary_violation -> stop_and_route_to_owner
 
 ARTIFACT_CONTRACT:
-- store := List plan/; index := List plan/index.md; unit := List plan/plan{n}/
+- schema_version := 1
+- store_default := List plan/; index := List plan/index.md; unit := List plan/plan{n}/
+- store_location := user_configurable -> confirm_with_user_before_first_plan
+- IF new_project -> ask_user "Where should List plan/ folder be created?"
 - files := plan.md|workflow.md|task.md
 - plan_workflow_required_for_handoff := true
 - task.md := developer_generated_from plan.md + workflow.md before code
@@ -68,6 +103,13 @@ READ_POLICY:
 - unrelated_mode_files := skip
 - same_system_unrelated_artifacts := canonical_terms_only
 - connected_artifacts := read when connection.read_required = true
+
+SOURCE_RESOLUTION:
+- skills_source.root := env.AI_SKILLS_DIR OR ~/.agents/skills
+- skills_source.precedence := env_override_then_global_only unless user_explicit_override
+- project_local_skill_files := ignored by default
+- artifacts.root := <PROJECT_ROOT>
+- artifacts.path := user_confirmed OR default to ./List plan/ with prior confirmation
 
 HANDOFF_POLICY:
 - planning_output := List plan/plan{n}/plan.md + workflow.md

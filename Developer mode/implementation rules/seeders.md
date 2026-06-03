@@ -20,7 +20,11 @@ SAMPLE_DATA_CONTRACT:
 - image_url_source := search_or_select_relevant_source_for_UI_value
 - empty_image_value := denied when UI displays image
 - fake_data := non_sensitive + realistic + schema_valid
-- seed_idempotency := rerunnable_without_duplicate_explosion when framework_supports
+- seed_idempotency := rerunnable_without_duplicate_explosion REQUIRED
+- IF !framework_native_idempotency -> upsert_pattern OR check_exists_before_insert OR explicit_user_approval_before_seed_rerun
+- seeder_truncate_before_insert := denied unless explicit_user_approval
+- seeder_run_against_production := denied
+- IF seed_data_loss_risk_detected -> stop_and_request_user_approval
 
 FUNCTIONAL_DONE:
 - seeded_data renders through current UI/API path

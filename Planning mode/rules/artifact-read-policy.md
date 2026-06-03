@@ -13,6 +13,12 @@ PURPOSE:
 RULES:
 - sequence_allocation := inherit ../../gemini.md#ARTIFACT_CONTRACT.sequence_id|sequence_gap
 - artifact_unit := inherit ../../gemini.md#ARTIFACT_CONTRACT.artifact_unit
+- artifact_folder_location := user_configurable NOT hardcoded
+- IF new_plan -> confirm_artifact_folder_with_user := REQUIRED
+- detect_existing_list_plan_folders := scan_workspace_for "List plan"|"list-plan"|"plans"|"planning"
+- IF multiple_folder_candidates_found -> present_options_to_user -> require_explicit_selection
+- IF no_existing_folder -> ask_user "Where should List plan/ folder be created?"
+- default_location := ./List plan/ BUT user_approval_required_before_creation
 - index_row := sequence_id|artifact_name|artifact_scope|folder|plan_file|workflow_file|task_file|status|depends_on|connected_to
 - integration_context := related_plan_ids|shared_entities|shared_roles|shared_navigation|dependencies|handoff_points|separate_project_reason
 - connected_artifacts := connected_to|connected_files|connection_scope|connection_reason|read_required_for_revision|read_required_for_implementation

@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint_and_links:
+    name: Lint Markdown, Check Links, Hashes (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint-cli
+        run: npm i -g markdownlint-cli
+
+      - name: Lint Markdown
+        run: |
+          markdownlint "**/*.md" || (echo "::warning::Markdown lint reported issues" && exit 1)
+
+      - name: Check installer links (raw.githubusercontent URLs)
+        run: |
+          set -e
+          curl -I -sSf https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.ps1 > /dev/null
+          curl -I -sSf https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.sh > /dev/null
+
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Shellcheck install.sh
+        run: shellcheck -S warning install.sh
+
+      - name: Compute SHA256 checksums
+        run: |
+          {
+            echo "## SHA256 Checksums";
+            echo;
+            echo '```';
+            sha256sum gemini.md || true;
+            sha256sum "Planning mode/Planning.md" || true;
+            sha256sum "Developer mode/developer.md" || true;
+            sha256sum install.ps1 || true;
+            sha256sum install.sh || true;
+            sha256sum SKILLS_VERSION || true;
+            echo '```';
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  installer_unix:
+    name: Verify Bash installer (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Bash installer to temp dir
+        run: |
+          set -e
+          dest="${RUNNER_TEMP}/skills-sh"
+          bash ./install.sh -y -d "$dest"
+          test -f "$dest/gemini.md"
+          test -f "$dest/Planning mode/Planning.md"
+          test -f "$dest/Developer mode/developer.md"
+          test -f "$dest/SKILLS_VERSION" || true
+
+  installer_windows:
+    name: Verify PowerShell installer (Windows)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run PowerShell installer to temp dir
+        shell: pwsh
+        run: |
+          $dest = Join-Path $env:RUNNER_TEMP 'skills-ps1'
+          ./install.ps1 -Destination $dest -Yes
+          if (-not (Test-Path (Join-Path $dest 'gemini.md'))) { throw 'Missing gemini.md' }
+          if (-not (Test-Path (Join-Path $dest 'Planning mode/Planning.md'))) { throw 'Missing Planning.md' }
+          if (-not (Test-Path (Join-Path $dest 'Developer mode/developer.md'))) { throw 'Missing developer.md' }
+          if (-not (Test-Path (Join-Path $dest 'SKILLS_VERSION'))) { Write-Host 'SKILLS_VERSION not found (optional)'; }
