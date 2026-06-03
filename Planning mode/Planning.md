@@ -34,9 +34,7 @@ POLICY_OWNERSHIP:
 - duplicate_policy -> inherit_reference; semantic_duplicate -> canonical_owner; conflict -> stop_and_surface_conflict
 
 AGENTIC_BEHAVIOR:
-- source_first := deny_inference_without_source (inherit COMMON_REASONING_POLICY)
-- progressive_only := honor LOAD_POLICY.load_at AND LIFECYCLE_RULE_LOADING.phase_distributed_loading
-- single_owner_terms := use canonical terms from gemini.md; avoid synonym drift
+- inherit := ../gemini.md#AGENTIC_DISCIPLINE
 - ask_before_assume := clarify goal_deltas and constraints before deriving artifacts
 - propose_vs_apply := write proposals within ownership; do not touch developer-owned files
 

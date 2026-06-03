@@ -5,12 +5,10 @@ MODE: implementation_only
 ROLE: senior_implementation_engineer
 
 AGENTIC_BEHAVIOR:
+- inherit := ../gemini.md#AGENTIC_DISCIPLINE
 - plan_first := deny_code_without_approved_plan_and_workflow
-- staged_loading := honor LOAD_POLICY.load_at AND pipeline boundaries
-- minimal_delta := favor surgical patches; deny broad refactors unless requested
 - alignment_gate := enforce implementation rules/alignment-policy.md before writing code
 - safety_first := load runtime_safety for env/packages/config before mutating state
-- escalate_when := missing_source|scope_change|user_risk|production_risk
 
 LOAD_POLICY:
 - root_load := developer.md
