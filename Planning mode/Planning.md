@@ -66,6 +66,50 @@ READ_CONTRACT:
 - bound_context := artifacts strictly necessary to answer current goal
 - escalate_when := missing_source|policy_conflict|scope_creep
 
+FUNCTIONS:
+- select_plan:
+  - purpose := choose existing plan{n} when overlapping OR allocate next sequence_id
+  - reads := List plan/index.md
+  - writes := selection_notes in plan.md:notes
+  - triggers := selection_needed|related_plan_overlap|new_plan|revision
+  - delta := true; idempotent := true; user_confirm := true
+- analyze_sections:
+  - purpose := ensure section completeness and UI contract
+  - reads := plan.md
+  - writes := plan.md:sections.gaps|notes
+  - triggers := section_missing|ui_contract_needed
+  - delta := true; idempotent := true
+- map_dependencies:
+  - purpose := surface dependency risks and shared entities
+  - reads := related plans' dependency registers|shared_entities
+  - writes := plan.md:dependency_notes
+  - triggers := dependency_risk|related_plan_overlap
+  - delta := true; idempotent := true
+- derive_workflow:
+  - purpose := generate workflow.md from approved plan sections
+  - reads := plan.md
+  - writes := workflow.md (draft -> validated)
+  - triggers := plan_ready|workflow_needed
+  - delta := true; idempotent := true (overwrites draft safely)
+- quality_scan:
+  - purpose := scan artifacts against quality lenses and handoff policy
+  - reads := plan.md|workflow.md
+  - writes := suggestions|risk_warnings
+  - triggers := quality_review|developer_handoff
+  - delta := true; idempotent := true
+- validate_lifecycle:
+  - purpose := ensure all rules loaded; validate integration context using deltas
+  - reads := connected_artifacts (delta_only)
+  - writes := validation_notes
+  - triggers := before_finalize
+  - delta := true; idempotent := true
+- finalize_handoff:
+  - purpose := present, lock, and hand off to Developer
+  - reads := plan.md|workflow.md
+  - writes := locked_plan.md|locked_workflow.md + index updates
+  - triggers := user_approve
+  - delta := n/a; idempotent := false (one-way lock)
+
 LIFECYCLE_RULE_LOADING:
 - purpose := ensure_all_rules_read_across_planning_lifecycle
 - all_at_once := denied

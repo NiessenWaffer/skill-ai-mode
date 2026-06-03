@@ -40,6 +40,56 @@ RELATED_ARTIFACTS_READ:
 - read_related_units := scan List plan/index.md for overlapping flows
 - selection := user_confirms_target_plan{n}
 
+FUNCTIONS:
+- intake:
+  - purpose := capture goal, signals, and severity
+  - reads := user_input (goal, signals)
+  - writes := debug.md:goal|context|signals|severity
+  - triggers := error_report|test_failure|regression|prod_incident
+  - delta := true; idempotent := true
+- reproduce:
+  - purpose := create minimal repro and record exact inputs/outputs
+  - reads := code|tests|env_info
+  - writes := debug.md:repro_steps|observed_outputs
+  - triggers := repro_needed|cannot_reproduce
+  - delta := true; idempotent := true
+- scope_and_impact:
+  - purpose := map components and tests; read target plan artifacts
+  - reads := routes|handlers|services|schemas|migrations|ui_components|plan.md|workflow.md
+  - writes := debug.md:impact_surface|test_inventory
+  - triggers := impact_needed
+  - delta := true; idempotent := true
+- hypothesize:
+  - purpose := list and prioritize root-cause hypotheses; design low-cost experiments
+  - reads := repro_steps|signals
+  - writes := debug.md:hypothesis_list|experiment_plan
+  - triggers := symptom_pattern|component_suspected
+  - delta := true; idempotent := true
+- instrument:
+  - purpose := add minimal temporary logging/assertions/traces
+  - reads := code
+  - writes := instrumentation_plan; temporary code logs
+  - triggers := low_signal|cannot_reproduce
+  - delta := true; idempotent := false (temporary changes)
+- fix:
+  - purpose := apply minimal-delta fix aligned with runtime safety
+  - reads := instrumented_code|hypothesis_results
+  - writes := code patch list
+  - triggers := root_cause_identified
+  - delta := true; idempotent := false
+- verify:
+  - purpose := run targeted tests and confirm failing case passes; add missing tests
+  - reads := tests|changed_files
+  - writes := verification_result
+  - triggers := ready_for_test
+  - delta := true; idempotent := true
+- propose_revisions:
+  - purpose := propose plan/workflow diffs needed to prevent reoccurrence
+  - reads := plan.md|workflow.md|root_cause_summary
+  - writes := debug.md:proposed_revisions
+  - triggers := requires_feature_change|plan_misalignment_detected
+  - delta := true; idempotent := true
+
 PHASES:
 
 D1_INTAKE:

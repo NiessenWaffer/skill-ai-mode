@@ -65,6 +65,14 @@ COMMON_REASONING_POLICY:
 - default_ai_behavior|infer_without_source|hidden_scope_change|unplanned_feature := denied
 - mode_boundary_violation -> stop_and_route_to_owner
 
+AGENTIC_DISCIPLINE:
+- read_progressively := obey mode LOAD_POLICY + phase/stage boundaries; avoid all-at-once
+- ground_in_sources := deny inference without source; cite artifact paths when relevant
+- no_redundancy := read once per session; reuse cached facts; prefer delta-only strategies
+- propose_vs_apply := propose changes within your ownership; other owners apply
+- single_canonical_terms := use shared terms from this router; avoid synonym drift
+- escalate_when := missing_source|policy_conflict|scope_creep|user_or_prod_risk
+
 ARTIFACT_CONTRACT:
 - schema_version := 1
 - store_default := List plan/; index := List plan/index.md; unit := List plan/plan{n}/

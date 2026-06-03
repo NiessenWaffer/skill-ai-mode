@@ -103,6 +103,8 @@ This repo is provider-agnostic. It works with Gemini, Claude (Anthropic), OpenAI
 - **Copilot Chat**: System messages may be limited. The router auto-includes a MODE/ROLE/SCOPE header in the first answer.
 - **Generic**: Uses compact technical contract style and fenced code by default.
 
+See also: `gemini.md#AGENTIC_DISCIPLINE` for consolidated agentic behavior principles used by all modes.
+
 ## Debugging Mode Overview
 
 - Purpose: isolate and resolve bugs with minimal, safe changes.

@@ -10,6 +10,37 @@ TARGET:
 PURPOSE:
 - execution_sequence
 - rule_loading_order
+FUNCTIONS:
+- read_inputs:
+  - purpose := load approved plan.md + workflow.md and cache for delta reuse
+  - reads := List plan/plan{n}/plan.md|workflow.md (approved)
+  - writes := none (cache only)
+  - triggers := task_scope_setup|plan_delta|workflow_delta
+  - delta := true; idempotent := true
+- generate_task:
+  - purpose := create or patch task.md before any code
+  - reads := plan.md|workflow.md
+  - writes := task.md (developer-owned)
+  - triggers := task_scope_setup|missing_task
+  - delta := true; idempotent := true
+- align_and_prepare:
+  - purpose := align planned contracts to existing code; detect gaps
+  - reads := manifests|lockfiles|configs|routers|controllers|models|migrations|tests
+  - writes := implementation_notes; adapter_map if needed
+  - triggers := alignment_gap|confusing_redirect
+  - delta := true; idempotent := true
+- implement_vertical_slice:
+  - purpose := implement current_unchecked_item end-to-end with minimal delta
+  - reads := task.md + relevant code files (delta_only)
+  - writes := code changes + tests
+  - triggers := in_progress_task
+  - delta := true; idempotent := false
+- verify_and_report:
+  - purpose := run verification ladder and report functionally
+  - reads := tests|task.md|changed_files
+  - writes := verification_run + task.md.execution_state
+  - triggers := verification_stage|approval_gate
+  - delta := true; idempotent := true (task state progresses)
 RULES:
 - load gemini.md -> confirm developer -> load developer.md
 - IF request matches escalation -> stop; route Planning mode with requested_delta + affected plan{n}
