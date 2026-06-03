@@ -1,3 +1,10 @@
+## Debugging Mode Overview
+
+- Purpose: isolate and resolve bugs with minimal, safe changes.
+- Artifact: `List plan/plan{n}/debug.md` (debug plan only; not a feature plan).
+- Phases: `D1_INTAKE → D2_REPRO → D3_SCOPE_IMPACT → D4_HYPOTHESES → D5_INSTRUMENT → D6_FIX → D7_VERIFY → D8_POSTMORTEM`.
+- Safety: minimal-delta fixes, follow runtime-safety, no secrets/PII, no production data writes.
+
 # skill-ai-mode
 
 Minimal AI skill repo for supported AI editors.
@@ -10,6 +17,7 @@ Minimal AI skill repo for supported AI editors.
 
 - `/planning` → `Planning mode/Planning.md`
 - `/developer` → `Developer mode/developer.md`
+- `/debug` → `Debugging mode/debugger.md`
 
 ## Installation (Global Only)
 
@@ -94,6 +102,7 @@ This repo is provider-agnostic. It works with Gemini, Claude (Anthropic), OpenAI
 - Start a session inside your project and type:
   - `/planning` to create or revise `List plan/plan1/plan.md`
   - `/developer` to generate `task.md` and implement tasks progressively
+  - `/debug` to create `List plan/plan1/debug.md` and run a focused debugging lifecycle
 - If prompted, confirm where to create `List plan/` in the project.
 
 ### Provider Tips
@@ -145,6 +154,19 @@ Per-provider examples (to be added based on your CLI):
 - Gemini CLI: pass system and user via input files
 - Copilot CLI: if unsupported, run via editor chat instead
 
+### CLI environment variables quick reference
+- AI_SKILLS_DIR: Absolute path to your global skills folder. Default: `~/.agents/skills`.
+- AI_PROVIDER: Provider hint used by helpers to choose a default model.
+  - Allowed: `gemini` | `anthropic` | `openai` | `copilot` | `generic`.
+- MODEL: Explicit model to use. If unset, helpers select defaults by provider.
+  - Fallbacks when MODEL is unset: `ANTHROPIC_MODEL` | `OPENAI_MODEL` | `GEMINI_MODEL`.
+  - Built-in defaults if none provided: `claude-3-opus-20240229` | `gpt-4o` | `gemini-1.5-pro` (picked by provider).
+- AI_CLI_TEMPLATE: Shell command template the helpers expand and print as `COMMAND=...`.
+  - Placeholders: `{SYSTEM_FILE}` `{USER_FILE}` `{MODEL}`.
+  - Example (PowerShell): `anthropic messages create --model {MODEL} --system @"{SYSTEM_FILE}" --input-file @"{USER_FILE}"`
+  - Example (bash): `anthropic messages create --model {MODEL} --system @"{SYSTEM_FILE}" --input-file @"{USER_FILE}"`
+
+
 ## Versioning & Upgrade
 - This skills bundle is versioned via `SKILLS_VERSION` (semver). Installers copy this file.
 - To check installed version:
@@ -163,10 +185,12 @@ The skills are invoked by simple chat commands. Most AI editors accept these as 
 - Primary commands:
   - `/planning` → loads Planning kernel and runs PHASE_1_INIT progressively
   - `/developer` → loads Developer kernel and starts the implementation pipeline
+  - `/debug` → loads Debugging kernel and starts D1_INTAKE
 
 - Fallback aliases (if your editor reserves `/`):
   - `planning` or `plan` or `spec` or `workflow`
   - `developer` or `implement` or `build` or `code` or `task`
+  - `debug` or `triage` or `repro` or `fix_bug`
 
 - Expected first prompts in Planning:
   - Confirms/asks for `List plan/` folder location in your project

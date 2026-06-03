@@ -5,6 +5,7 @@ MODE: root_router
 MODES:
 - planning := Planning mode/Planning.md
 - developer := Developer mode/developer.md
+- debugging := Debugging mode/debugger.md
 
 AGENT_SKILLS:
 - planning_skill := /planning -> Planning mode/Planning.md
@@ -15,8 +16,10 @@ AGENT_SKILLS:
 COMMAND_ALIASES:
 - /planning -> planning
 - /developer -> developer
+- /debug -> debugging
 - plan|spec|workflow|revise_plan -> planning
 - implement|build|code|fix|task -> developer
+- debug|triage|repro|fix_bug -> debugging
 
 PROVIDER_ADAPTERS:
 - provider_detection := env.AI_PROVIDER OR editor_config.provider_name OR first_run_prompt("Which AI are you using? (gemini|anthropic|openai|copilot|generic)")
