@@ -89,3 +89,9 @@ jobs:
           if (-not (Test-Path (Join-Path $dest 'Developer mode/developer.md'))) { throw 'Missing developer.md' }
           if (-not (Test-Path (Join-Path $dest 'Debugging mode/debugger.md'))) { throw 'Missing debugger.md' }
           if (-not (Test-Path (Join-Path $dest 'SKILLS_VERSION'))) { Write-Host 'SKILLS_VERSION not found (optional)'; }
+
+      - name: Run doctor.ps1 against installed skills
+        shell: pwsh
+        run: |
+          $dest = Join-Path $env:RUNNER_TEMP 'skills-ps1'
+          ./doctor.ps1 -SkillsDir $dest -ProjectRoot $env:RUNNER_TEMP

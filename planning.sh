@@ -35,3 +35,21 @@ printf "SYSTEM_FILE=%s\n" "$SYSTEM_FILE"
 printf "USER_FILE=%s\n" "$USER_FILE"
 echo "Next: Use your AI CLI to send a system message from SYSTEM_FILE and a user message from USER_FILE."
 echo "Tip: export AI_PROVIDER to hint formatting; export AI_SKILLS_DIR to override skills location."
+
+# If a provider-agnostic CLI template is provided, print a ready-to-run command
+if [[ -n "${AI_CLI_TEMPLATE:-}" ]]; then
+  model="${MODEL:-}"
+  if [[ -z "$model" ]]; then
+    case "${AI_PROVIDER:-}" in
+      anthropic|claude) model="${ANTHROPIC_MODEL:-claude-3-opus-20240229}" ;;
+      openai|gpt)      model="${OPENAI_MODEL:-gpt-4o}" ;;
+      gemini|google)   model="${GEMINI_MODEL:-gemini-1.5-pro}" ;;
+      *)               model="generic" ;;
+    esac
+  fi
+  cmd="$AI_CLI_TEMPLATE"
+  cmd="${cmd//\{SYSTEM_FILE\}/$SYSTEM_FILE}"
+  cmd="${cmd//\{USER_FILE\}/$USER_FILE}"
+  cmd="${cmd//\{MODEL\}/$model}"
+  echo "COMMAND=$cmd"
+fi
