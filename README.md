@@ -335,51 +335,11 @@ The skills are invoked by simple chat commands. Most AI editors accept these as 
   - Use the Lua mappings to copy `/planning` or `/developer` to clipboard and paste into chat.
   - Confirm `List plan/` and `plan1/plan.md` are created.
 
-## Features & Capabilities
-
-- **7-Phase Planning Loop**: Reads through Initialization, Analysis, Dependency Mapping, Workflow Derivation, Quality Scanning, Validation, and Finalization (never all at once)
-- **Implementation Pipelines**: Sequences code changes meticulously (frontend-first, runtime safety, strict goal verification)
-- **Design-First & Mobile-First**: Enforces UI guidelines and mobile layout before feature approval
-- **Strict Separation**: Planning and Developer modes are always global; only artifacts (`List plan/`) are project-local
-
 ## Troubleshooting
 
 - If your AI CLI/editor doesn't recognize the skills, double-check that `~/.agents/skills` is set as the skills directory in your editor settings.
 - If install fails, ensure Node.js and npm are installed and up to date.
 - To fully remove, uninstall the CLI and manually delete `~/.agents/skills`.
-
-## Purpose
-
-- **Build applications methodically**: Planning ensures clarity, Developer ensures alignment, Design focus drives usability.
-- **No zero-shot chaos**: Everything is structured, auditable, and user-approved.
-
-## Features & Capabilities
-
-This application acts as a structured workflow kernel for AI coding assistants, enforcing a disciplined, enterprise-grade software development lifecycle. By controlling the AI's behavior via specific modes, it guarantees high-quality app building without hallucinations or scope creep.
-
-### 🏛️ Dual-Mode Architecture (Strict Separation)
-- **`/planning` (Senior Architect)**: Owns the root blueprint (`plan.md`) and precise user flows (`workflow.md`). It ensures all edge cases (circumstance branching), UI contracts, and dependency maturity checks are cleared before coding begins.
-- **`/developer` (Senior Engineer)**: Owns execution (`task.md` and codebase). It operates under a strict **Verification Ladder** (evidence-based completion) and **Checked Item Protection** to prevent the AI from overwriting or regressing already completed work.
-
-### 📜 Artifact-Driven Handoffs & Escalation
-- **Immutable Handoffs**: Developers cannot start until a plan is verified and user-approved. Developers are explicitly denied from altering planning artifacts.
-- **Escalation Protocol**: If requirements change during implementation (e.g., discovering a missing feature or needing a backend extension), the Developer mode forcefully halts and escalates back to Planning mode.
-
-### 🚀 Progressive, Multi-Phase Workflows
-- **7-Phase Planning Loop**: Progressively reads through Initialization, Analysis, Dependency Mapping, Workflow Derivation, Quality Scanning, Validation, and Finalization to avoid massive context dumps and ensure exhaustive application design.
-- **Implementation Pipelines**: Sequences code changes meticulously (frontend-first, explicit runtime safety rules, and strict goal verification at every step).
-
-### 🎨 Design-First & Mobile-First Constraints
-- Enforces strict UI guidelines via `design-page-first.md`.
-- Requires explicit mobile layout considerations (responsive priorities, table/form density on mobile) before approving any feature.
-
-## Purpose
-
-The primary goal is to **build applications methodically** instead of relying on chaotic zero-shot code generation. 
-- **Planning** ensures you know exactly *what* is being built, how edge cases are handled, and how the UI behaves.
-- **Developer** ensures the code aligns exactly with the plan, validating every step without breaking existing implementations.
-- **Design focus** drives clear, accessible, and user-centric interfaces.
-- **Overlap handling** automatically connects related plans rather than treating every request in isolation.
 
 ## Planning Lifecycle
 
