@@ -40,59 +40,62 @@ After installing or regenerating commands, run this inside Gemini CLI:
 /commands reload
 ```
 
-## Installation (Global Only)
+## Installation
 
 **Planning, Developer, and Debugging mode skills are installed to your global skills folder, never inside a project.**
 **Gemini CLI slash commands are installed as `.toml` files in your global Gemini commands folder.**
 
-### Windows One-Liner (recommended)
-```bat
-skill-ai-mode-install
-```
-- Uses the included `skill-ai-mode-install.cmd` to download and run the installer.
-- To choose a custom destination:
-```bat
-skill-ai-mode-install -Destination "C:\Users\<you>\.agents\skills"
-```
-- To choose both custom destinations:
-```bat
-skill-ai-mode-install -Destination "C:\Users\<you>\.agents\skills" -GeminiCommandsDestination "C:\Users\<you>\.gemini\commands"
-```
-- Gemini CLI commands are installed to:
-```bat
-C:\Users\<you>\.gemini\commands
-```
-- If not on PATH, run from the repo root:
-```bat
-."\skill-ai-mode-install.cmd"
+### Windows PowerShell
+
+Paste this into PowerShell. You do not need to download the repo first.
+
+```powershell
+$installer = "$env:TEMP\skill-ai-mode-install.ps1"; Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.ps1" -OutFile $installer; powershell -ExecutionPolicy Bypass -File $installer -Yes
 ```
 
-### PowerShell (manual alternative)
+It installs:
+
+- Skills: `C:\Users\<you>\.agents\skills`
+- Gemini CLI commands: `C:\Users\<you>\.gemini\commands`
+
+Then open Gemini CLI and run:
+
+```text
+/commands reload
+```
+
+After that, use:
+
+```text
+/planning
+/developer
+/debug
+```
+
+### macOS/Linux
+```bash
+curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.sh | bash -s -- -y
+```
+
+Then run `/commands reload` in Gemini CLI.
+
+### Advanced Install Options
+
+Use these only if you want custom install paths or you already cloned the repo.
+
 ```powershell
 # From the repo root
-pwsh -ExecutionPolicy Bypass -File .\install.ps1
+pwsh -ExecutionPolicy Bypass -File .\install.ps1 -Yes
 
-# Or with a custom destination
-pwsh -ExecutionPolicy Bypass -File .\install.ps1 -Destination "C:\Users\<you>\.agents\skills"
+# Custom skills destination
+pwsh -ExecutionPolicy Bypass -File .\install.ps1 -Yes -Destination "C:\Users\<you>\.agents\skills"
 
-# Or with a custom Gemini commands destination
-pwsh -ExecutionPolicy Bypass -File .\install.ps1 -GeminiCommandsDestination "C:\Users\<you>\.gemini\commands"
+# Custom Gemini commands destination
+pwsh -ExecutionPolicy Bypass -File .\install.ps1 -Yes -GeminiCommandsDestination "C:\Users\<you>\.gemini\commands"
 ```
 
-- Installs to: `~/.agents/skills` by default
-- Copies: `gemini.md`, `Planning mode/`, `Developer mode/`, `Debugging mode/` into the global skills folder
-- Generates Gemini CLI slash commands as `.toml` files in `~/.gemini/commands`
-- Gemini commands embed the relevant Markdown skill and rule content into each TOML prompt
-- Places no files in your project folder
-- After install, configure your AI CLI/editor to use `~/.agents/skills` as the skills source
-- In Gemini CLI, run `/commands reload`, then use `/planning`, `/developer`, or `/debug`
-
-### macOS/Linux One-Liners
 ```bash
-# Default destination: ~/.agents/skills
-curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.sh | bash -s -- -y
-
-# Custom destination
+# Custom skills destination
 curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.sh | bash -s -- -y -d "$HOME/.agents/skills"
 
 # Custom Gemini commands destination
