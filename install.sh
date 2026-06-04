@@ -8,23 +8,29 @@ set -euo pipefail
 #   curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.sh | bash -s -- -y -d "$HOME/.agents/skills"
 
 DESTINATION="${DESTINATION:-}"
+GEMINI_COMMANDS_DESTINATION="${GEMINI_COMMANDS_DESTINATION:-}"
 AUTO_YES=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -d|--destination)
       DESTINATION="$2"; shift 2 ;;
+    --gemini-commands-destination)
+      GEMINI_COMMANDS_DESTINATION="$2"; shift 2 ;;
     -y|--yes)
       AUTO_YES=1; shift ;;
     *)
       echo "Unknown argument: $1" >&2
-      echo "Usage: install.sh [-y|--yes] [-d|--destination <path>]" >&2
+      echo "Usage: install.sh [-y|--yes] [-d|--destination <path>] [--gemini-commands-destination <path>]" >&2
       exit 1 ;;
   esac
 done
 
 if [[ -z "${DESTINATION}" ]]; then
   DESTINATION="$HOME/.agents/skills"
+fi
+if [[ -z "${GEMINI_COMMANDS_DESTINATION}" ]]; then
+  GEMINI_COMMANDS_DESTINATION="$HOME/.gemini/commands"
 fi
 
 ARCHIVE_URL="https://github.com/NiessenWaffer/skill-ai-mode/archive/refs/heads/main.tar.gz"
@@ -35,7 +41,8 @@ mkdir -p "$EXTRACT_PATH"
 
 if [[ $AUTO_YES -eq 0 ]]; then
   echo "This will install skill-ai-mode into your global AI skills folder: $DESTINATION"
-  echo "It downloads the GitHub repo archive, then copies gemini.md plus the full Planning, Developer, and Debugging mode folders recursively."
+  echo "It will also install Gemini CLI slash commands into: $GEMINI_COMMANDS_DESTINATION"
+  echo "It downloads the GitHub repo archive, copies gemini.md plus the full Planning, Developer, and Debugging mode folders recursively, and generates Gemini .toml command files."
   read -r -p "Do you want to install? (y/n) " CONFIRM
   case "$CONFIRM" in
     y|Y|yes|YES) ;; 
@@ -72,12 +79,20 @@ cp -R "$ROOT_DIR/Developer mode" "$DESTINATION/"
 cp -R "$ROOT_DIR/Debugging mode" "$DESTINATION/"
 cp -R "$ROOT_DIR/SKILLS_VERSION" "$DESTINATION/" 2>/dev/null || true
 
+if ! command -v node >/dev/null 2>&1; then
+  echo "Node.js is required to generate Gemini command files." >&2
+  exit 1
+fi
+mkdir -p "$GEMINI_COMMANDS_DESTINATION"
+node "$ROOT_DIR/scripts/generate-gemini-commands.js" "$GEMINI_COMMANDS_DESTINATION"
+
 echo "Installed skill-ai-mode to $DESTINATION"
+echo "Installed Gemini slash commands to $GEMINI_COMMANDS_DESTINATION"
 if [[ -f "$DESTINATION/SKILLS_VERSION" ]]; then
   ver=$(tr -d '\r' < "$DESTINATION/SKILLS_VERSION" | tr -d '\n')
   echo "Skills version: $ver"
 fi
-printf "Configure your AI editor/CLI to read %s\n" "$DESTINATION"
+printf "In Gemini CLI, run /commands reload, then use /planning, /developer, or /debug.\n"
 
 # Cleanup
 rm -rf "$TMP_ROOT"

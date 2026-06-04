@@ -1,5 +1,6 @@
 param(
     [string]$Destination = "$env:USERPROFILE\.agents\skills",
+    [string]$GeminiCommandsDestination = "$env:USERPROFILE\.gemini\commands",
     [switch]$Yes
 )
 
@@ -16,7 +17,8 @@ $zipPath = Join-Path $tempRoot 'repo.zip'
 $extractPath = Join-Path $tempRoot 'extract'
 
 Write-Host "This will install skill-ai-mode into your global AI skills folder: $Destination"
-Write-Host "It downloads the GitHub repo archive, then copies gemini.md plus the full Planning, Developer, and Debugging mode folders recursively, including nested rule files, so the rules remain the source of truth."
+Write-Host "It will also install Gemini CLI slash commands into: $GeminiCommandsDestination"
+Write-Host "It downloads the GitHub repo archive, copies gemini.md plus the full Planning, Developer, and Debugging mode folders recursively, and generates Gemini .toml command files."
 if (-not $Yes) {
     $confirmation = Read-Host "Do you want to install? (y/n)"
     if ($confirmation -notin @('y', 'Y', 'yes', 'YES')) {
@@ -59,12 +61,20 @@ try {
         Copy-Item -Path $source -Destination $Destination -Recurse -Force
     }
 
+    $generator = Join-Path $repoSource.FullName 'scripts\generate-gemini-commands.js'
+    if (-not (Test-Path $generator)) {
+        throw "Missing Gemini command generator: $generator"
+    }
+    New-Item -ItemType Directory -Path $GeminiCommandsDestination -Force | Out-Null
+    node $generator $GeminiCommandsDestination
+
     Write-Host "Installed skill-ai-mode to $Destination"
+    Write-Host "Installed Gemini slash commands to $GeminiCommandsDestination"
     if (Test-Path (Join-Path $Destination 'SKILLS_VERSION')) {
         $ver = Get-Content -Raw (Join-Path $Destination 'SKILLS_VERSION')
         Write-Host ("Skills version: {0}" -f ($ver.Trim()))
     }
-    Write-Host "Install complete. Configure your AI CLI/editor to read $Destination."
+    Write-Host "Install complete. In Gemini CLI, run /commands reload, then use /planning, /developer, or /debug."
 }
 finally {
     if (Test-Path $tempRoot) {

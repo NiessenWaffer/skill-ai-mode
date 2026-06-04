@@ -12,9 +12,38 @@ Minimal AI skill repo for supported AI editors.
 - `/developer` → `Developer mode/developer.md`
 - `/debug` → `Debugging mode/debugger.md`
 
+## Gemini CLI Native Commands
+
+Gemini CLI does not load these slash commands from `.md` files. It loads command definition files with the `.toml` extension.
+
+- Global Gemini commands path:
+  - Windows: `C:\Users\<you>\.gemini\commands`
+  - POSIX: `~/.gemini/commands`
+- Project-local Gemini commands path:
+  - `<project>/.gemini/commands`
+- Generated command files:
+  - `planning.toml`
+  - `developer.toml`
+  - `debug.toml`
+
+This repo includes generated project-local commands in `.gemini/commands/` for local testing. Installers also generate the same commands into the global Gemini commands folder.
+
+To regenerate project-local Gemini command files from the Markdown skill sources:
+
+```bash
+npm run generate:gemini-commands
+```
+
+After installing or regenerating commands, run this inside Gemini CLI:
+
+```text
+/commands reload
+```
+
 ## Installation (Global Only)
 
-**Planning mode and Developer mode are always installed to your global skills folder, never inside a project.**
+**Planning, Developer, and Debugging mode skills are installed to your global skills folder, never inside a project.**
+**Gemini CLI slash commands are installed as `.toml` files in your global Gemini commands folder.**
 
 ### Windows One-Liner (recommended)
 ```bat
@@ -24,6 +53,14 @@ skill-ai-mode-install
 - To choose a custom destination:
 ```bat
 skill-ai-mode-install -Destination "C:\Users\<you>\.agents\skills"
+```
+- To choose both custom destinations:
+```bat
+skill-ai-mode-install -Destination "C:\Users\<you>\.agents\skills" -GeminiCommandsDestination "C:\Users\<you>\.gemini\commands"
+```
+- Gemini CLI commands are installed to:
+```bat
+C:\Users\<you>\.gemini\commands
 ```
 - If not on PATH, run from the repo root:
 ```bat
@@ -37,12 +74,18 @@ pwsh -ExecutionPolicy Bypass -File .\install.ps1
 
 # Or with a custom destination
 pwsh -ExecutionPolicy Bypass -File .\install.ps1 -Destination "C:\Users\<you>\.agents\skills"
+
+# Or with a custom Gemini commands destination
+pwsh -ExecutionPolicy Bypass -File .\install.ps1 -GeminiCommandsDestination "C:\Users\<you>\.gemini\commands"
 ```
 
 - Installs to: `~/.agents/skills` by default
 - Copies: `gemini.md`, `Planning mode/`, `Developer mode/`, `Debugging mode/` into the global skills folder
+- Generates Gemini CLI slash commands as `.toml` files in `~/.gemini/commands`
+- Gemini commands embed the relevant Markdown skill and rule content into each TOML prompt
 - Places no files in your project folder
 - After install, configure your AI CLI/editor to use `~/.agents/skills` as the skills source
+- In Gemini CLI, run `/commands reload`, then use `/planning`, `/developer`, or `/debug`
 
 ### macOS/Linux One-Liners
 ```bash
@@ -51,6 +94,9 @@ curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/in
 
 # Custom destination
 curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.sh | bash -s -- -y -d "$HOME/.agents/skills"
+
+# Custom Gemini commands destination
+curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/install.sh | bash -s -- -y --gemini-commands-destination "$HOME/.gemini/commands"
 ```
 
 ### Editor Configuration (All Editors)
@@ -58,34 +104,43 @@ curl -fsSL https://raw.githubusercontent.com/NiessenWaffer/skill-ai-mode/main/in
 - Optional: set `AI_PROVIDER` environment variable to hint formatting/profile
   - `gemini` | `anthropic` | `openai` | `copilot` | `generic`
 - Optional: override skills dir with `AI_SKILLS_DIR` (takes precedence over default `~/.agents/skills`).
-- Use slash commands in chat: `/planning` and `/developer`.
+- Use slash commands in chat: `/planning`, `/developer`, and `/debug`.
+- Gemini CLI requires command files to be `.toml`; these are generated into `~/.gemini/commands`.
 
 ### Update
 - Re-run the installer (either method). It safely overwrites the existing files in `~/.agents/skills`.
+- Re-run `/commands reload` in Gemini CLI after updating.
 
 ### Uninstall
 - Delete the global skills folder manually:
   - Windows: `C:\Users\<you>\.agents\skills`
   - POSIX: `~/.agents/skills`
+- Delete generated Gemini commands manually:
+  - Windows: `C:\Users\<you>\.gemini\commands\planning.toml`, `developer.toml`, `debug.toml`
+  - POSIX: `~/.gemini/commands/planning.toml`, `developer.toml`, `debug.toml`
 
 ## Project Setup
 
 - **Keep** `List plan/` inside your local project repository to store `plan.md`, `workflow.md`, and `task.md`.
 - **Do NOT** copy `Planning mode/`, `Developer mode/`, `.agents/`, or `gemini.md` into your local project.
-- To start, open your AI editor inside your project and type `/planning` or `/developer`. The AI will automatically ask where the `List plan/` folder should be created if it doesn't exist.
+- **Do NOT** copy `.gemini/commands` into every project unless you intentionally want project-local Gemini commands. The normal installer writes global commands to `~/.gemini/commands`.
+- To start, open your AI editor inside your project and type `/planning`, `/developer`, or `/debug`. The AI will automatically ask where the `List plan/` folder should be created if it doesn't exist.
 
 ## Example Workflow
 
 1. Install globally (see above)
 2. Open your project in your AI editor
-3. Type `/planning` or `/developer`
-4. The AI uses global skills and creates/updates `List plan/plan1/plan.md` etc. in your project
+3. In Gemini CLI, run `/commands reload` after install or update
+4. Type `/planning`, `/developer`, or `/debug`
+5. The AI uses global skills and creates/updates `List plan/plan1/plan.md` etc. in your project
 
 ## Multi-Provider Support
 
 This repo is provider-agnostic. It works with Gemini, Claude (Anthropic), OpenAI, GitHub Copilot Chat, and generic editors.
 
 - Configure your editor/CLI to load skills from: `~/.agents/skills`
+- For Gemini CLI, commands are loaded from `~/.gemini/commands/*.toml`
+- The Gemini `.toml` files are generated from the Markdown source files in this repo
 - On first use, the router can adapt style and constraints per provider (see `gemini.md#PROVIDER_ADAPTERS`).
 - If your editor lacks a system message, the agent embeds a MODE/ROLE/SCOPE header in the first reply to preserve behavior.
 
@@ -166,6 +221,7 @@ Per-provider examples (to be added based on your CLI):
   ```
 - OpenAI CLI: pass system and user via input files
 - Gemini CLI: pass system and user via input files
+- Gemini CLI native slash commands: run `/commands reload`, then `/planning`, `/developer`, or `/debug`
 - Copilot CLI: if unsupported, run via editor chat instead
 
 ### CLI environment variables quick reference
@@ -187,6 +243,7 @@ Per-provider examples (to be added based on your CLI):
   - Windows: prints after install (install.ps1) or re-run installer
   - macOS/Linux: prints after install (install.sh) or re-run installer
 - Upgrading: re-run your installer command; files are safely overwritten in `~/.agents/skills` (or `AI_SKILLS_DIR`).
+- Gemini command upgrades overwrite `planning.toml`, `developer.toml`, and `debug.toml`; run `/commands reload` afterward.
 
 ## Developer Delta Reads
 - The developer pipeline uses delta-only reads for `plan.md`, `workflow.md`, and inspected project files.
@@ -195,6 +252,8 @@ Per-provider examples (to be added based on your CLI):
 ## Slash Commands in Editors
 
 The skills are invoked by simple chat commands. Most AI editors accept these as plain messages.
+Gemini CLI specifically reads custom slash commands from `.toml` files in `~/.gemini/commands` or `<project>/.gemini/commands`.
+Markdown files such as `gemini.md` and `Planning mode/Planning.md` remain the skill source of truth, but Gemini CLI slash command discovery requires the generated `.toml` wrappers.
 
 - Primary commands:
   - `/planning` → loads Planning kernel and runs PHASE_1_INIT progressively
@@ -216,6 +275,7 @@ The skills are invoked by simple chat commands. Most AI editors accept these as 
 
 ### Configure Your Editor Once
 - Skills directory: point your editor/CLI to `~/.agents/skills`
+- Gemini CLI commands directory: `~/.gemini/commands`
 - Optional provider hint (helps formatting): set env `AI_PROVIDER` to
   - `gemini` | `anthropic` | `openai` | `copilot` | `generic`
 
@@ -304,6 +364,13 @@ The skills are invoked by simple chat commands. Most AI editors accept these as 
   - Send `/developer` only after plan.md + workflow.md are approved.
   - Expect: "task.md generation required before code" and creation/patch of `task.md`.
 
+- **Gemini CLI**
+  - Confirm command files exist in `C:\Users\<you>\.gemini\commands` or `~/.gemini/commands`.
+  - Confirm the files are `planning.toml`, `developer.toml`, and `debug.toml`.
+  - Run `/commands reload`.
+  - Run `/planning`, `/developer`, or `/debug`.
+  - If a command is missing, check that the file extension is `.toml`, not `.md`.
+
 - **Vibe Coder**
   - Settings → Skills Directory = `C:\Users\<you>\.agents\skills`.
   - New project chat → type `/planning` → confirm List plan path → ensure `List plan/plan1/plan.md` is created.
@@ -338,8 +405,9 @@ The skills are invoked by simple chat commands. Most AI editors accept these as 
 ## Troubleshooting
 
 - If your AI CLI/editor doesn't recognize the skills, double-check that `~/.agents/skills` is set as the skills directory in your editor settings.
+- If Gemini CLI doesn't show `/planning`, `/developer`, or `/debug`, confirm the files are in `~/.gemini/commands`, have the `.toml` extension, and then run `/commands reload`.
 - If install fails, ensure Node.js and npm are installed and up to date.
-- To fully remove, uninstall the CLI and manually delete `~/.agents/skills`.
+- To fully remove, uninstall the CLI and manually delete `~/.agents/skills` plus the generated command files in `~/.gemini/commands`.
 
 ## Planning Lifecycle
 
